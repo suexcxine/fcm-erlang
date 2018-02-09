@@ -12,3 +12,5 @@ rel/example_project
 _rel
 fcm.d
 relx
+_build
+tags
