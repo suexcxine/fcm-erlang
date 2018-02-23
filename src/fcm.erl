@@ -83,7 +83,12 @@ handle_result(GCMResult, RegId) when is_binary(RegId) ->
     handle_result(GCMResult, [RegId]);
 handle_result(GCMResult, RegIds) ->
     {_MulticastId, _SuccessesNumber, _FailuresNumber, _CanonicalIdsNumber, Results} = GCMResult,
-    lists:map(fun({Result, RegId}) -> {RegId, parse(Result)} end, lists:zip(Results, RegIds)).
+    case Results of
+        Results when is_list(Results) ->
+            lists:map(fun({Result, RegId}) -> {RegId, parse(Result)} end, lists:zip(Results, RegIds));
+        _ ->
+            []
+    end.
 
 do_backoff(RetryAfter, RegIds, Message, Key, Retry) when (Retry >= 0) ->
     case RetryAfter of
